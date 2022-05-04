@@ -13,46 +13,48 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
-@Table(name="departments")
+@Table(name="groups")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Department {
+public class Group {
     @Id
     @SequenceGenerator(
-            name = "department_sequence",
-            sequenceName = "department_sequence",
+            name = "group_sequence",
+            sequenceName = "group_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "department_sequence"
+            generator = "group_sequence"
     )
     private Long id;
 
-
-    private String name;
-
-    @OneToMany(
-            cascade = {CascadeType.REMOVE, CascadeType.REFRESH},
-            mappedBy = "department",
-            fetch = FetchType.LAZY
-    )
-    private List<Teacher> teachers;
+    private String literal;
+    private int number;
 
     @OneToMany(
-            cascade = {CascadeType.REMOVE, CascadeType.REFRESH},
-            mappedBy = "department",
-            fetch = FetchType.LAZY
+            cascade = {
+//                    CascadeType.REMOVE,
+                    CascadeType.REFRESH},
+            mappedBy = "group",
+            fetch = FetchType.EAGER
     )
-    private List<Course> courses;
+    private List<Student> students = new ArrayList<>();
+
+//    @ManyToMany
+//    private List<Course> courses = new ArrayList<>();
+
 
 }

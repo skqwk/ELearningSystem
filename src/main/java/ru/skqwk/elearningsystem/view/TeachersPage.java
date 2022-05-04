@@ -10,7 +10,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import ru.skqwk.elearningsystem.model.Teacher;
-import ru.skqwk.elearningsystem.services.ELearningService;
+import ru.skqwk.elearningsystem.services.IELearningService;
 import ru.skqwk.elearningsystem.view.components.TeacherForm;
 
 import javax.annotation.security.PermitAll;
@@ -20,15 +20,13 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class TeachersPage extends VerticalLayout {
 
-
-    private final ELearningService service;
+    private final IELearningService service;
 
     Grid<Teacher> grid = new Grid<>(Teacher.class);
     TextField filterText = new TextField();
     TeacherForm teacherForm;
 
-
-    public TeachersPage(ELearningService service) {
+    public TeachersPage(IELearningService service) {
         this.service = service;
 
         addClassName("list-view");
@@ -46,14 +44,34 @@ public class TeachersPage extends VerticalLayout {
         closeEditor();
     }
 
-    private void closeEditor() {
-        teacherForm.setTeacher(null);
-        teacherForm.setVisible(false);
-        removeClassName("editing");
-    }
-
     private void updateList() {
         grid.setItems(service.findAllTeachersByFilter(filterText.getValue()));
+    }
+
+    private void configureGrid() {
+        grid.addClassName("teacher-grid");
+        grid.setSizeFull();
+        grid.setColumns("name", "surname", "patronymic", "workExperience");
+
+        grid.addColumn(teacher -> teacher.getDepartment().getName()).setHeader("Кафедра");
+
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
+        grid.asSingleSelect().addValueChangeListener(e -> editTeacher(e.getValue()));
+    }
+
+    private Component getToolbar() {
+        filterText.setPlaceholder("Filter by name");
+        filterText.setClearButtonVisible(true);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(e -> updateList());
+
+        Button addNewTeacher = new Button("Add new teacher");
+        addNewTeacher.addClickListener(e -> addTeacher());
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addNewTeacher);
+        toolbar.addClassName("toolbar");
+
+        return toolbar;
     }
 
     private Component getContent() {
@@ -75,30 +93,24 @@ public class TeachersPage extends VerticalLayout {
         teacherForm.addListener(TeacherForm.CloseEvent.class,  e -> closeEditor());
     }
 
+    private void closeEditor() {
+        teacherForm.setEntity(null);
+        teacherForm.setVisible(false);
+        removeClassName("editing");
+    }
+
+
     private void saveTeacher(TeacherForm.SaveEvent event) {
-        service.saveTeacher(event.getTeacher());
+        service.saveTeacher(event.getEntity());
         updateList();
         closeEditor();
     }
 
     private void deleteTeacher(TeacherForm.DeleteEvent event) {
-        service.deleteTeacher(event.getTeacher());
+
+        service.deleteTeacher(event.getEntity());
         updateList();
         closeEditor();
-    }
-
-    private Component getToolbar() {
-        filterText.setPlaceholder("Filter by name");
-        filterText.setClearButtonVisible(true);
-        filterText.setValueChangeMode(ValueChangeMode.LAZY);
-        filterText.addValueChangeListener(e -> updateList());
-
-        Button addNewTeacher = new Button("Add new teacher");
-        addNewTeacher.addClickListener(e -> addTeacher());
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addNewTeacher);
-        toolbar.addClassName("toolbar");
-
-        return toolbar;
     }
 
     private void addTeacher() {
@@ -106,23 +118,11 @@ public class TeachersPage extends VerticalLayout {
         editTeacher(new Teacher());
     }
 
-    private void configureGrid() {
-        grid.addClassName("teacher-grid");
-        grid.setSizeFull();
-        grid.setColumns("name", "surname", "patronymic", "workExperience");
-
-        grid.addColumn(teacher -> teacher.getDepartment().getName()).setHeader("Кафедра");
-
-        grid.getColumns().forEach(col -> col.setAutoWidth(true));
-
-        grid.asSingleSelect().addValueChangeListener(e -> editTeacher(e.getValue()));
-    }
-
     private void editTeacher(Teacher teacher) {
         if (teacher == null) {
             closeEditor();
         } else {
-            teacherForm.setTeacher(teacher);
+            teacherForm.setEntity(teacher);
             teacherForm.setVisible(true);
             addClassName("editing");
         }

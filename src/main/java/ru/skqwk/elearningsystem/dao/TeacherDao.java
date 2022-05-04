@@ -8,8 +8,7 @@ import ru.skqwk.elearningsystem.model.Teacher;
 
 import java.util.List;
 
-@Repository
-public interface TeacherDao extends JpaRepository<Teacher, Long> {
+public interface TeacherDao extends AbstractDao<Teacher> {
 
     @Query("select t from Teacher t " +
             "where lower(t.name) like lower(concat('%', :searchTerm, '%')) " +

@@ -45,13 +45,25 @@ public class MainLayout extends AppLayout {
     private void createDrawer() {
         RouterLink teachersPage = new RouterLink("Teachers", TeachersPage.class);
         teachersPage.setHighlightCondition(HighlightConditions.sameLocation());
+
         RouterLink studentsPage = new RouterLink("Students", StudentsPage.class);
         studentsPage.setHighlightCondition(HighlightConditions.sameLocation());
+
+        RouterLink coursesPage = new RouterLink("Courses", CoursesPage.class);
+        coursesPage.setHighlightCondition(HighlightConditions.sameLocation());
+
+        RouterLink groupsPage = new RouterLink("Groups", GroupsPage.class);
+        groupsPage.setHighlightCondition(HighlightConditions.sameLocation());
+
+
+
 
 
         addToDrawer(new VerticalLayout(
                 teachersPage,
-                studentsPage
+                studentsPage,
+                coursesPage,
+                groupsPage
         ));
     }
 }

@@ -14,44 +14,44 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
-import ru.skqwk.elearningsystem.model.Department;
-import ru.skqwk.elearningsystem.model.Teacher;
+import ru.skqwk.elearningsystem.model.Group;
+import ru.skqwk.elearningsystem.model.Student;
 
 import java.util.List;
 
-public class TeacherForm extends FormLayout {
-    Binder<Teacher> binder = new BeanValidationBinder<>(Teacher.class);
+public class StudentForm extends FormLayout {
+    Binder<Student> binder = new BeanValidationBinder<>(Student.class);
 
     TextField name = new TextField("name");
     TextField surname = new TextField("surname");
     TextField patronymic = new TextField("patronymic");
-    ComboBox<Department> department = new ComboBox<>("department");
+    ComboBox<Group> group = new ComboBox<>("group");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button cancel = new Button("Cancel");
 
-    private Teacher teacher;
+    private Student student;
 
-    public TeacherForm(List<Department> departments, Teacher teacher) {
-        this.teacher =  teacher;
-        addClassName("teacher-form");
+    public StudentForm(List<Group> groups, Student student) {
+        this.student =  student;
+        addClassName("student-form");
         binder.bindInstanceFields(this);
-        department.setItems(departments);
-        department.setItemLabelGenerator(Department::getName);
+        group.setItems(groups);
+        group.setItemLabelGenerator(g -> String.format("%s %s", g.getNumber(), g.getLiteral()));
 
         add(
                 name,
                 surname,
                 patronymic,
-                department,
+                group,
                 createButtonsLayout()
         );
     }
 
-    public void setEntity(Teacher teacher) {
-        this.teacher =  teacher;
-        binder.readBean(teacher);
+    public void setEntity(Student student) {
+        this.student =  student;
+        binder.readBean(student);
     }
 
     private Component createButtonsLayout() {
@@ -60,8 +60,8 @@ public class TeacherForm extends FormLayout {
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         save.addClickListener(event -> validateAndSave());
-        delete.addClickListener(event -> fireEvent(new DeleteEvent(this, teacher)));
-        cancel.addClickListener(event -> fireEvent(new CloseEvent(this)));
+        delete.addClickListener(event -> fireEvent(new StudentForm.DeleteEvent(this, student)));
+        cancel.addClickListener(event -> fireEvent(new StudentForm.CloseEvent(this)));
 
         save.addClickShortcut(Key.ENTER);
         cancel.addClickShortcut(Key.ESCAPE);
@@ -71,42 +71,42 @@ public class TeacherForm extends FormLayout {
 
     private void validateAndSave() {
         try {
-            binder.writeBean(teacher);
-            fireEvent(new SaveEvent(this, teacher));
+            binder.writeBean(student);
+            fireEvent(new StudentForm.SaveEvent(this, student));
         } catch (ValidationException e) {
             e.printStackTrace();
         }
     }
 
 
-    public static abstract class TeacherFormEvent extends ComponentEvent<TeacherForm> {
-        private Teacher teacher;
+    public static abstract class StudentFormEvent extends ComponentEvent<StudentForm> {
+        private Student student;
 
-        protected TeacherFormEvent(TeacherForm source, Teacher teacher) {
+        protected StudentFormEvent(StudentForm source, Student student) {
             super(source, false);
-            this.teacher =  teacher;
+            this.student =  student;
         }
 
-        public Teacher getEntity() {
-            return teacher;
-        }
-    }
-
-    public static class SaveEvent extends TeacherFormEvent {
-        SaveEvent(TeacherForm source, Teacher teacher) {
-            super(source, teacher);
+        public Student getEntity() {
+            return student;
         }
     }
 
-    public static class DeleteEvent extends TeacherFormEvent {
-        DeleteEvent(TeacherForm source, Teacher teacher) {
-            super(source, teacher);
+    public static class SaveEvent extends StudentForm.StudentFormEvent {
+        SaveEvent(StudentForm source, Student student) {
+            super(source, student);
+        }
+    }
+
+    public static class DeleteEvent extends StudentForm.StudentFormEvent {
+        DeleteEvent(StudentForm source, Student student) {
+            super(source, student);
         }
 
     }
 
-    public static class CloseEvent extends TeacherFormEvent {
-        CloseEvent(TeacherForm source) {
+    public static class CloseEvent extends StudentForm.StudentFormEvent {
+        CloseEvent(StudentForm source) {
             super(source, null);
         }
     }
