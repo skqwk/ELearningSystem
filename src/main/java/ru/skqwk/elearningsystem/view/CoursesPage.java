@@ -2,6 +2,7 @@ package ru.skqwk.elearningsystem.view;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -23,6 +24,8 @@ public class CoursesPage extends VerticalLayout {
     private final IELearningService service;
     private final TextField filterText = new TextField();
     private final Grid<Course> grid = new Grid<>(Course.class);
+    Dialog addGroups = new Dialog();
+
     CourseForm courseForm;
 
     public CoursesPage(IELearningService service) {
@@ -63,7 +66,7 @@ public class CoursesPage extends VerticalLayout {
     }
 
     private void configureForm () {
-        courseForm = new CourseForm(service.findAllDepartments(), new Course());
+        courseForm = new CourseForm(new Course(), service.findAllDepartments());
         courseForm.setWidth("25em");
 
 

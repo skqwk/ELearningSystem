@@ -55,6 +55,12 @@ public class MainLayout extends AppLayout {
         RouterLink groupsPage = new RouterLink("Groups", GroupsPage.class);
         groupsPage.setHighlightCondition(HighlightConditions.sameLocation());
 
+        RouterLink departmentsPage = new RouterLink("Departments", DepartmentsPage.class);
+        departmentsPage.setHighlightCondition(HighlightConditions.sameLocation());
+
+        RouterLink academicPlanPage = new RouterLink("Academic Plan", AcademicPlanPage.class);
+        academicPlanPage.setHighlightCondition(HighlightConditions.sameLocation());
+
 
 
 
@@ -63,7 +69,9 @@ public class MainLayout extends AppLayout {
                 teachersPage,
                 studentsPage,
                 coursesPage,
-                groupsPage
+                groupsPage,
+                departmentsPage,
+                academicPlanPage
         ));
     }
 }

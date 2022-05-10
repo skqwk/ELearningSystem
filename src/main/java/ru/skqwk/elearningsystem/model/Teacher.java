@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import ru.skqwk.elearningsystem.model.dto.CourseTeacherGroup;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,12 +17,14 @@ import javax.persistence.Id;
 import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -53,19 +58,33 @@ public class Teacher {
     private int workExperience;
 
     @ManyToOne
-    @JoinColumn(
-            name = "department_id",
-            referencedColumnName = "id"
-    )
+//    @JoinColumn(
+//            name = "department_id",
+//            referencedColumnName = "id"
+//    )
     @NotNull
     private Department department;
 
-    @OneToMany(
-            cascade = {CascadeType.REMOVE, CascadeType.REFRESH},
-            fetch = FetchType.LAZY
-    )
-    private List<Group> groups;
-
-//    @ManyToMany
+//    @OneToMany(
+//            cascade = {CascadeType.REMOVE, CascadeType.REFRESH},
+//            fetch = FetchType.EAGER
+//    )
+//    @Fetch(value = FetchMode.SELECT)
+//    private List<Group> groups;
+//
+//    @ManyToMany(
+//            cascade = {CascadeType.REMOVE, CascadeType.REFRESH},
+//            fetch = FetchType.EAGER
+//    )
+//    @Fetch(value = FetchMode.SELECT)
 //    private List<Course> courses;
+    @OneToMany(
+            cascade = {CascadeType.REMOVE,
+                    CascadeType.REFRESH
+            },
+            mappedBy = "teacher",
+            fetch = FetchType.EAGER
+    )
+    @Fetch(value = FetchMode.SELECT)
+    private List<CourseTeacherGroup> courseTeacherGroups = new ArrayList<>();
 }

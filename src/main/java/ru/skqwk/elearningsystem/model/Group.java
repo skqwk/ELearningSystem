@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import ru.skqwk.elearningsystem.model.dto.CourseTeacherGroup;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -18,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -28,6 +32,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class Group {
     @Id
     @SequenceGenerator(
@@ -46,15 +51,30 @@ public class Group {
 
     @OneToMany(
             cascade = {
-//                    CascadeType.REMOVE,
                     CascadeType.REFRESH},
+            fetch = FetchType.EAGER,
+            mappedBy = "group"
+    )
+    @Fetch(value = FetchMode.SELECT)
+    private List<Student> students = new ArrayList<>();
+
+    @ManyToMany(
+            cascade = {
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH},
+            fetch = FetchType.EAGER,
+            mappedBy = "groups"
+    )
+    @Fetch(value = FetchMode.SELECT)
+    private List<Course> courses = new ArrayList<>();
+
+    @OneToMany(
+            cascade = {CascadeType.REMOVE,
+                    CascadeType.REFRESH
+            },
             mappedBy = "group",
             fetch = FetchType.EAGER
     )
-    private List<Student> students = new ArrayList<>();
-
-//    @ManyToMany
-//    private List<Course> courses = new ArrayList<>();
-
-
+    @Fetch(value = FetchMode.SELECT)
+    private List<CourseTeacherGroup> courseTeacherGroups = new ArrayList<>();
 }

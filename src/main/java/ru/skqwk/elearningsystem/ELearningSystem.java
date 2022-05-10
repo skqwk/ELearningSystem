@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import ru.skqwk.elearningsystem.dao.CourseDao;
+import ru.skqwk.elearningsystem.dao.CourseTeacherGroupDao;
 import ru.skqwk.elearningsystem.dao.DepartmentDao;
 import ru.skqwk.elearningsystem.dao.GroupDao;
 import ru.skqwk.elearningsystem.dao.StudentDao;
@@ -14,6 +15,8 @@ import ru.skqwk.elearningsystem.model.Department;
 import ru.skqwk.elearningsystem.model.Group;
 import ru.skqwk.elearningsystem.model.Student;
 import ru.skqwk.elearningsystem.model.Teacher;
+import ru.skqwk.elearningsystem.model.dto.CourseTeacherGroup;
+
 import java.util.List;
 
 @SpringBootApplication
@@ -29,7 +32,9 @@ public class ELearningSystem {
 			CourseDao courseDao,
 			StudentDao studentDao,
 			TeacherDao teacherDao,
-			DepartmentDao departmentDao
+			DepartmentDao departmentDao,
+			CourseTeacherGroupDao courseTeacherGroupDao
+
 	) {
 		return args -> {
 
@@ -58,8 +63,9 @@ public class ELearningSystem {
 			Group group = Group.builder()
 					.literal("A")
 					.number(10)
-//					.courses(List.of(mathCourse))
 					.build();
+
+
 
 			Student student1 = Student.builder()
 					.name("Петр")
@@ -82,7 +88,15 @@ public class ELearningSystem {
 					.build();
 
 			group.setStudents(List.of(student1, student2));
+			group.setCourses(List.of(mathCourse));
+			mathCourse.setGroups(List.of(group));
 			groupDao.save(group);
+			courseDao.save(mathCourse);
+
+
+//			System.out.println(groupDao.findById(1L).get().getCourses());
+//			Course course = courseDao.getById(1L);
+//			System.out.println(course.getGroups());
 
 			studentDao.save(student1);
 			studentDao.save(student2);
@@ -104,13 +118,22 @@ public class ELearningSystem {
 							.department(math)
 					.build());
 
-			teacherDao.save(Teacher.builder()
-							.name("Александр")
-							.surname("Сидоров")
-							.patronymic("Петрович")
-							.workExperience(5)
-							.department(math)
-					.build());
+			Teacher mathTeacher = Teacher.builder()
+					.name("Александр")
+					.surname("Сидоров")
+					.patronymic("Петрович")
+					.workExperience(5)
+					.department(math)
+					.build();
+
+			teacherDao.save(mathTeacher);
+			CourseTeacherGroup courseTeacherGroup = CourseTeacherGroup.builder()
+					.course(mathCourse)
+					.teacher(mathTeacher)
+					.group(group)
+					.build();
+
+			courseTeacherGroupDao.save(courseTeacherGroup);
 		};
 	}
 

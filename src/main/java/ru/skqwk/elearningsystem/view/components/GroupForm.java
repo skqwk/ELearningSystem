@@ -6,7 +6,6 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -15,12 +14,10 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
+import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.shared.Registration;
 import ru.skqwk.elearningsystem.model.Group;
-import ru.skqwk.elearningsystem.model.Department;
 import ru.skqwk.elearningsystem.model.Student;
-
-import java.util.List;
 
 public class GroupForm extends FormLayout {
     Binder<Group> binder = new BeanValidationBinder<>(Group.class);
@@ -32,6 +29,7 @@ public class GroupForm extends FormLayout {
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button cancel = new Button("Cancel");
+    Button add = new Button("Add");
 
     private Group group;
 
@@ -44,10 +42,8 @@ public class GroupForm extends FormLayout {
         binder.bindInstanceFields(this);
 
         configureStudentsGrid();
-        students.setItems(group.getStudents());
+        students.setItems(DataProvider.ofCollection(group.getStudents()));
 
-//        department.setItems(departments);
-//        department.setItemLabelGenerator(Department::getName);
 
         add(
                 literal,
@@ -84,15 +80,17 @@ public class GroupForm extends FormLayout {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        add.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
         save.addClickListener(event -> validateAndSave());
         delete.addClickListener(event -> fireEvent(new GroupForm.DeleteEvent(this, group)));
         cancel.addClickListener(event -> fireEvent(new GroupForm.CloseEvent(this)));
+        add.addClickListener(event -> fireEvent(new GroupForm.AddEvent(this, group)));
 
         save.addClickShortcut(Key.ENTER);
         cancel.addClickShortcut(Key.ESCAPE);
 
-        return new HorizontalLayout(delete, cancel, save);
+        return new HorizontalLayout(delete, cancel, save, add);
     }
 
     private void validateAndSave() {
@@ -128,6 +126,12 @@ public class GroupForm extends FormLayout {
 
     public static class DeleteEvent extends GroupForm.GroupFormEvent {
         DeleteEvent(GroupForm source, Group group) {
+            super(source, group);
+        }
+
+    }
+    public static class AddEvent extends GroupForm.GroupFormEvent {
+        AddEvent(GroupForm source, Group group) {
             super(source, group);
         }
 
