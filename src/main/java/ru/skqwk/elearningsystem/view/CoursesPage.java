@@ -15,10 +15,11 @@ import ru.skqwk.elearningsystem.services.IELearningService;
 import ru.skqwk.elearningsystem.view.components.CourseForm;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 @PageTitle("Courses")
 @Route(value="courses", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed("ADMIN")
 public class CoursesPage extends VerticalLayout {
 
     private final IELearningService service;

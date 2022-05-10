@@ -9,6 +9,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import ru.skqwk.elearningsystem.model.User;
 import ru.skqwk.elearningsystem.security.SecurityService;
 
 //@JsModule("@vaadin/vaadin-lumo-styles/utility.js")
@@ -28,6 +31,20 @@ public class MainLayout extends AppLayout {
         logo.addClassNames("text-l", "m-m");
 
         Button logout = new Button("Log out", e -> securityService.logout());
+
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        System.out.println(principal.getClass());
+
+        if (principal instanceof User) {
+            User currentUser = (User) principal;
+            System.out.println(currentUser);
+        } else {
+            String username = principal.toString();
+            System.out.println(username);
+        }
+
 
         HorizontalLayout header = new HorizontalLayout(
                 new DrawerToggle(),
@@ -60,9 +77,6 @@ public class MainLayout extends AppLayout {
 
         RouterLink academicPlanPage = new RouterLink("Academic Plan", AcademicPlanPage.class);
         academicPlanPage.setHighlightCondition(HighlightConditions.sameLocation());
-
-
-
 
 
         addToDrawer(new VerticalLayout(

@@ -20,11 +20,12 @@ import ru.skqwk.elearningsystem.services.IELearningService;
 import ru.skqwk.elearningsystem.view.components.AcademicPlanForm;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @PageTitle("Academic Plan")
 @Route(value="academic-plan", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed("ADMIN")
 public class AcademicPlanPage extends VerticalLayout {
     private final IELearningService service;
 

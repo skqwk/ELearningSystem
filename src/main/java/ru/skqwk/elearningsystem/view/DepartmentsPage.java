@@ -13,11 +13,11 @@ import ru.skqwk.elearningsystem.model.Department;
 import ru.skqwk.elearningsystem.services.IELearningService;
 import ru.skqwk.elearningsystem.view.components.DepartmentForm;
 
-import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 @PageTitle("Departments")
 @Route(value="departments", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed("ADMIN")
 public class DepartmentsPage extends VerticalLayout {
     private final IELearningService service;
 

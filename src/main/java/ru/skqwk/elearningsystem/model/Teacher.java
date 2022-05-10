@@ -20,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -58,26 +59,9 @@ public class Teacher {
     private int workExperience;
 
     @ManyToOne
-//    @JoinColumn(
-//            name = "department_id",
-//            referencedColumnName = "id"
-//    )
     @NotNull
     private Department department;
 
-//    @OneToMany(
-//            cascade = {CascadeType.REMOVE, CascadeType.REFRESH},
-//            fetch = FetchType.EAGER
-//    )
-//    @Fetch(value = FetchMode.SELECT)
-//    private List<Group> groups;
-//
-//    @ManyToMany(
-//            cascade = {CascadeType.REMOVE, CascadeType.REFRESH},
-//            fetch = FetchType.EAGER
-//    )
-//    @Fetch(value = FetchMode.SELECT)
-//    private List<Course> courses;
     @OneToMany(
             cascade = {CascadeType.REMOVE,
                     CascadeType.REFRESH
@@ -87,4 +71,7 @@ public class Teacher {
     )
     @Fetch(value = FetchMode.SELECT)
     private List<CourseTeacherGroup> courseTeacherGroups = new ArrayList<>();
+
+    @OneToOne
+    private User user;
 }

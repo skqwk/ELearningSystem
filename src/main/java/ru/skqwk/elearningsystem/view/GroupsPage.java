@@ -18,10 +18,11 @@ import ru.skqwk.elearningsystem.services.IELearningService;
 import ru.skqwk.elearningsystem.view.components.GroupForm;
 
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 
 @PageTitle("Groups")
 @Route(value="groups", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed("ADMIN")
 public class GroupsPage extends VerticalLayout {
     private final IELearningService service;
 
