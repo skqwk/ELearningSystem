@@ -55,18 +55,18 @@ public class Course extends AbstractEntity {
     private Department department;
 
 
-    @ManyToMany(
-            cascade = {
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH},
-            fetch = FetchType.EAGER
-    )
-    @JoinTable(name="groups_courses",
-            joinColumns=@JoinColumn(name="course_id"),
-            inverseJoinColumns=@JoinColumn(name="group_id")
-    )
-    @Fetch(value = FetchMode.SELECT)
-    private List<Group> groups = new ArrayList<>();
+//    @ManyToMany(
+//            cascade = {
+//                    CascadeType.MERGE,
+//                    CascadeType.REFRESH},
+//            fetch = FetchType.EAGER
+//    )
+//    @JoinTable(name="groups_courses",
+//            joinColumns=@JoinColumn(name="course_id"),
+//            inverseJoinColumns=@JoinColumn(name="group_id")
+//    )
+//    @Fetch(value = FetchMode.SELECT)
+//    private List<Group> groups = new ArrayList<>();
 
     @OneToMany(
             cascade = {CascadeType.REMOVE,
@@ -80,7 +80,7 @@ public class Course extends AbstractEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, department, groups, courseTeacherGroups);
+        return Objects.hash(id, name, department, courseTeacherGroups);
     }
 
     @Override

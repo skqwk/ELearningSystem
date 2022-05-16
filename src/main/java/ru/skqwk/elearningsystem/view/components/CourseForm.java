@@ -73,10 +73,10 @@ public class CourseForm extends FormLayout {
     public void setEntity(Course course) {
         this.course =  course;
         if (course != null) {
-//            groupsGrid.setItems(course.getCourseTeacherGroups().stream()
-//                    .map(CourseTeacherGroup::getGroup)
-//                    .collect(Collectors.toList()));
-            groupsGrid.setItems(course.getGroups());
+            groupsGrid.setItems(course.getCourseTeacherGroups().stream()
+                    .map(CourseTeacherGroup::getGroup)
+                    .collect(Collectors.toList()));
+//            groupsGrid.setItems(course.getGroups());
         }
         binder.readBean(course);
     }

@@ -9,8 +9,8 @@ import java.util.List;
 @Repository
 public interface GroupDao extends JpaRepository<Group, Long> {
 
-    List<Group> findAllByCoursesNotContains(Course course);
+//    List<Group> findAllByCoursesNotContains(Course course);
 
-    List<Group> findAllByCoursesContains(Course course);
+//    List<Group> findAllByCoursesContains(Course course);
 }
 

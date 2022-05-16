@@ -18,5 +18,7 @@ public interface TeacherDao extends AbstractDao<Teacher> {
 
     List<Teacher> findAllByDepartment(Department department);
 
+    Teacher findByUserId(Long id);
+
 //    List<Teacher> findAllByGroupsId
 }

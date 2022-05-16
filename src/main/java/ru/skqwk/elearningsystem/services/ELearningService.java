@@ -4,15 +4,20 @@ import org.springframework.stereotype.Service;
 import ru.skqwk.elearningsystem.dao.CourseDao;
 import ru.skqwk.elearningsystem.dao.CourseTeacherGroupDao;
 import ru.skqwk.elearningsystem.dao.DepartmentDao;
+import ru.skqwk.elearningsystem.dao.EducationalMaterialDao;
 import ru.skqwk.elearningsystem.dao.GroupDao;
 import ru.skqwk.elearningsystem.dao.StudentDao;
+import ru.skqwk.elearningsystem.dao.StudyStatusDao;
 import ru.skqwk.elearningsystem.dao.TeacherDao;
 import ru.skqwk.elearningsystem.model.Course;
 import ru.skqwk.elearningsystem.model.Department;
+import ru.skqwk.elearningsystem.model.EducationalMaterial;
 import ru.skqwk.elearningsystem.model.Group;
 import ru.skqwk.elearningsystem.model.Student;
+import ru.skqwk.elearningsystem.model.StudyStatus;
 import ru.skqwk.elearningsystem.model.Teacher;
 import ru.skqwk.elearningsystem.model.dto.CourseTeacherGroup;
+import ru.skqwk.elearningsystem.model.enumeration.Status;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -30,17 +35,27 @@ public class ELearningService implements IELearningService{
     private final CourseDao courseDao;
     private final CourseTeacherGroupDao courseTeacherGroupDao;
 
+    private final EducationalMaterialDao educationalMaterialDao;
+
+    private final StudyStatusDao studyStatusDao;
+
+
     public ELearningService(TeacherDao teacherDao,
                             StudentDao studentDao,
                             DepartmentDao departmentDao,
                             GroupDao groupDao,
                             CourseDao courseDao,
-                            CourseTeacherGroupDao courseTeacherGroupDao) {
+                            EducationalMaterialDao educationalMaterialDao,
+                            StudyStatusDao studyStatusDao,
+                            CourseTeacherGroupDao courseTeacherGroupDao
+    ) {
         this.teacherDao = teacherDao;
         this.studentDao = studentDao;
         this.departmentDao = departmentDao;
         this.groupDao = groupDao;
         this.courseDao = courseDao;
+        this.educationalMaterialDao = educationalMaterialDao;
+        this.studyStatusDao = studyStatusDao;
         this.courseTeacherGroupDao = courseTeacherGroupDao;
     }
 
@@ -165,23 +180,6 @@ public class ELearningService implements IELearningService{
         return null;
     }
 
-    @Override
-    public List<Group> findAllGroupsWithoutCourse(Course course) {
-        if (course.getId() == null) return findAllGroups();
-        return groupDao.findAllByCoursesNotContains(course);
-//        return courseTeacherGroupDao.findAllByCourseIsNot(course).stream()
-//                .map(CourseTeacherGroup::getGroup)
-//                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Group> findAllGroupsWithCourse(Course course) {
-        if (course.getId() == null) return new ArrayList<>();
-        return groupDao.findAllByCoursesContains(course);
-//        return courseTeacherGroupDao.findAllByCourse(course).stream()
-//                .map(CourseTeacherGroup::getGroup)
-//                .collect(Collectors.toList());
-    }
 
     @Override
     public List<Course> findAllCoursesWithoutGroup(Group group) {
@@ -210,6 +208,89 @@ public class ELearningService implements IELearningService{
     @Override
     public List<Teacher> findAllTeachersByDepartment(Department department) {
         return teacherDao.findAllByDepartment(department);
+    }
+
+    @Override
+    public Teacher findTeacherByUserId(Long id) {
+        return teacherDao.findByUserId(id);
+    }
+
+    @Override
+    public Student findStudentByUserId(Long id) {
+        return studentDao.findByUserId(id);
+    }
+
+    @Override
+    public List<CourseTeacherGroup> findAllCourseTeacherGroupsByTeacher(Teacher teacher) {
+        return courseTeacherGroupDao.findAllByTeacher(teacher);
+    }
+
+
+    @Override
+    public List<CourseTeacherGroup> findAllCourseTeacherGroupsByGroup(Group group) {
+        return courseTeacherGroupDao.findAllByGroup(group);
+    }
+
+//    @Override
+//    public String getStudentLessonStatus(Student student, Lesson lesson) {
+//        StudyStatus status = studyStatusDao.findByStudentAndLesson(student, lesson);
+//
+//        return status == null ? "Не приступил" : status.getStatus();
+//    }
+
+    @Override
+    public void saveStudyStatus(StudyStatus status) {
+        studyStatusDao.save(status);
+    }
+
+    @Override
+    public List<EducationalMaterial> findAllMaterialsByCourseTeacherGroup(CourseTeacherGroup courseTeacherGroup) {
+        return educationalMaterialDao.findAllByCourseTeacherGroup(courseTeacherGroup);
+    }
+
+    @Override
+    public List<String> getStudentStudyStatusesString(Student student, List<EducationalMaterial> materials) {
+        List<String> statuses = new ArrayList<>();
+        for (EducationalMaterial material : materials) {
+            StudyStatus status = studyStatusDao.findByStudentAndMaterial(student, material);
+            if (status == null) {
+                statuses.add("Не приступил");
+            } else {
+                statuses.add(status.getStatus().getName());
+            }
+        }
+
+
+        return statuses;
+    }
+
+    @Override
+    public List<StudyStatus> getStudentStudyStatuses(Student student, List<EducationalMaterial> materials) {
+        List<StudyStatus> statuses = new ArrayList<>();
+        for (EducationalMaterial material : materials) {
+            StudyStatus status = studyStatusDao.findByStudentAndMaterial(student, material);
+            if (status == null) {
+                statuses.add(StudyStatus.builder()
+                                .material(material)
+                                .status(Status.NOT_STARTED)
+                        .build());
+            } else {
+                statuses.add(status);
+            }
+        }
+
+        return statuses;
+    }
+
+    @Override
+    public Status getStudentMaterialStatus(Student student, EducationalMaterial material) {
+        StudyStatus status = studyStatusDao.findByStudentAndMaterial(student, material);
+        return status == null ? Status.NOT_STARTED : status.getStatus();
+    }
+
+    @Override
+    public void saveMaterial(EducationalMaterial material) {
+        educationalMaterialDao.save(material);
     }
 
 }

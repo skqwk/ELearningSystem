@@ -23,7 +23,7 @@ public class UserDaoInit implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("Insert users");
         User admin = User.builder()
-                .login("user")
+                .login("admin")
                 .password(passwordEncoder.encode("userpass"))
                 .role(UserRole.ADMIN)
                 .build();
@@ -34,7 +34,14 @@ public class UserDaoInit implements CommandLineRunner {
                 .role(UserRole.STUDENT)
                 .build();
 
+        User teacher = User.builder()
+                .login("teacher")
+                .password(passwordEncoder.encode("userpass"))
+                .role(UserRole.TEACHER)
+                .build();
+
         userDao.save(admin);
         userDao.save(student);
+        userDao.save(teacher);
     }
 }

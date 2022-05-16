@@ -17,6 +17,7 @@ public class SecurityService {
                 null,
                 null
         );
+        UserSingleton.logout();
     }
 
 }

@@ -58,15 +58,15 @@ public class Group {
     @Fetch(value = FetchMode.SELECT)
     private List<Student> students = new ArrayList<>();
 
-    @ManyToMany(
-            cascade = {
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH},
-            fetch = FetchType.EAGER,
-            mappedBy = "groups"
-    )
-    @Fetch(value = FetchMode.SELECT)
-    private List<Course> courses = new ArrayList<>();
+//    @ManyToMany(
+//            cascade = {
+//                    CascadeType.MERGE,
+//                    CascadeType.REFRESH},
+//            fetch = FetchType.EAGER,
+//            mappedBy = "groups"
+//    )
+//    @Fetch(value = FetchMode.SELECT)
+//    private List<Course> courses = new ArrayList<>();
 
     @OneToMany(
             cascade = {CascadeType.REMOVE,

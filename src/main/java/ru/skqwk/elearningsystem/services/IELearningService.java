@@ -2,10 +2,13 @@ package ru.skqwk.elearningsystem.services;
 
 import ru.skqwk.elearningsystem.model.Course;
 import ru.skqwk.elearningsystem.model.Department;
+import ru.skqwk.elearningsystem.model.EducationalMaterial;
 import ru.skqwk.elearningsystem.model.Group;
 import ru.skqwk.elearningsystem.model.Student;
+import ru.skqwk.elearningsystem.model.StudyStatus;
 import ru.skqwk.elearningsystem.model.Teacher;
 import ru.skqwk.elearningsystem.model.dto.CourseTeacherGroup;
+import ru.skqwk.elearningsystem.model.enumeration.Status;
 
 import java.util.Collection;
 import java.util.List;
@@ -46,11 +49,30 @@ public interface IELearningService {
 
      Collection<CourseTeacherGroup> findAcademicPlanForGroup(Long id);
 
-    List<Group> findAllGroupsWithoutCourse(Course course);
+//    List<Group> findAllGroupsWithoutCourse(Course course);
 
-    List<Group> findAllGroupsWithCourse(Course course);
+//    List<Group> findAllGroupsWithCourse(Course course);
 
     List<Course> findAllCoursesWithoutGroup(Group group);
 
     List<Teacher> findAllTeachersByDepartment(Department department);
+
+    Teacher findTeacherByUserId(Long id);
+
+    Student findStudentByUserId(Long id);
+
+    List<CourseTeacherGroup> findAllCourseTeacherGroupsByTeacher(Teacher teacher);
+
+    List<CourseTeacherGroup> findAllCourseTeacherGroupsByGroup(Group group);
+
+    void saveStudyStatus(StudyStatus status);
+
+    List<EducationalMaterial> findAllMaterialsByCourseTeacherGroup(CourseTeacherGroup courseTeacherGroup);
+
+    List<String> getStudentStudyStatusesString(Student student, List<EducationalMaterial> materials);
+    List<StudyStatus> getStudentStudyStatuses(Student student, List<EducationalMaterial> materials);
+
+    Status getStudentMaterialStatus(Student student, EducationalMaterial material);
+
+    void saveMaterial(EducationalMaterial material);
 }
