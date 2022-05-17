@@ -7,6 +7,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -30,7 +31,7 @@ import ru.skqwk.elearningsystem.view.components.Row;
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
-@PageTitle("Student Courses")
+@PageTitle("Уроки")
 @Route(value="my-courses", layout = MainLayout.class)
 @RolesAllowed("STUDENT")
 public class StudentCoursesPage extends VerticalLayout {
@@ -91,8 +92,12 @@ public class StudentCoursesPage extends VerticalLayout {
     private void openMaterial(EducationalMaterial material) {
         materialForm.removeAll();
 
-        materialForm.add(new Span(material.getTitle()));
-        materialForm.add(new Span(material.getContent()));
+        materialForm.add(new H3(material.getTitle()));
+        TextArea content = new TextArea("Содержание");
+        content.setValue(material.getContent());
+        content.setReadOnly(true);
+        content.setSizeFull();
+        materialForm.add(content);
 
         Status status = service.getStudentMaterialStatus(student, material);
 

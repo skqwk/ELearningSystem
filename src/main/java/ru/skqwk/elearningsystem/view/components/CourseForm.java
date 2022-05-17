@@ -26,14 +26,14 @@ import java.util.stream.Collectors;
 public class CourseForm extends FormLayout {
     Binder<Course> binder = new BeanValidationBinder<>(Course.class);
 
-    TextField name = new TextField("name");
-    ComboBox<Department> department = new ComboBox<>("department");
+    TextField name = new TextField("Название предмета");
+    ComboBox<Department> department = new ComboBox<>("Кафедра");
     Grid<Group> groupsGrid = new Grid<>(Group.class, false);
 
 
-    Button save = new Button("Save");
-    Button delete = new Button("Delete");
-    Button cancel = new Button("Cancel");
+    Button save = new Button("Сохранить");
+    Button delete = new Button("Удалить");
+    Button cancel = new Button("Закрыть");
 
     private Course course;
 

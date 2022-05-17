@@ -19,7 +19,7 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
-@PageTitle("Students")
+@PageTitle("Ученики")
 @Route(value="students", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class StudentsPage extends VerticalLayout {
@@ -50,14 +50,10 @@ public class StudentsPage extends VerticalLayout {
 
 
     private Component getToolbar() {
-        filterText.setPlaceholder("Filter by name");
-        filterText.setClearButtonVisible(true);
-        filterText.setValueChangeMode(ValueChangeMode.LAZY);
-        filterText.addValueChangeListener(e -> updateList());
 
-        Button addNewStudent = new Button("Add new student");
+        Button addNewStudent = new Button("Добавить ученика");
         addNewStudent.addClickListener(e -> addStudent());
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addNewStudent);
+        HorizontalLayout toolbar = new HorizontalLayout(addNewStudent);
         toolbar.addClassName("toolbar");
 
         return toolbar;
@@ -122,7 +118,13 @@ public class StudentsPage extends VerticalLayout {
         grid.addClassName("student-grid");
         grid.setSizeFull();
 
-        grid.setColumns("name", "surname", "patronymic");
+        grid.addColumn(Student::getName).setHeader("Имя");
+        grid.addColumn(Student::getSurname).setHeader("Фамилия");
+        grid.addColumn(Student::getPatronymic).setHeader("Отчество");
+
+
+//        grid.setColumns("name", "surname", "patronymic");
+
         grid.addColumn(student -> {
             Group group = student.getGroup();
             if (group != null) {

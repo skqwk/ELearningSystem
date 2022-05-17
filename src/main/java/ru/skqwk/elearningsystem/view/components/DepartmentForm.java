@@ -26,9 +26,9 @@ public class DepartmentForm extends FormLayout {
     Grid<Teacher> teachersGrid = new Grid<>(Teacher.class, false);
     Grid<Course> coursesGrid = new Grid<>(Course.class, false);
 
-    Button save = new Button("Save");
-    Button delete = new Button("Delete");
-    Button cancel = new Button("Cancel");
+    Button save = new Button("Сохранить");
+    Button delete = new Button("Удалить");
+    Button cancel = new Button("Закрыть");
 
     private Department department;
 

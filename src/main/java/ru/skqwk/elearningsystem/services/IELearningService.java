@@ -49,10 +49,6 @@ public interface IELearningService {
 
      Collection<CourseTeacherGroup> findAcademicPlanForGroup(Long id);
 
-//    List<Group> findAllGroupsWithoutCourse(Course course);
-
-//    List<Group> findAllGroupsWithCourse(Course course);
-
     List<Course> findAllCoursesWithoutGroup(Group group);
 
     List<Teacher> findAllTeachersByDepartment(Department department);

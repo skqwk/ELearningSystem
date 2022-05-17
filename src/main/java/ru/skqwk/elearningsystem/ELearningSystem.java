@@ -176,12 +176,6 @@ public class ELearningSystem {
 					.build());
 
 			courseTeacherGroupDao.save(CourseTeacherGroup.builder()
-					.course(algebra)
-					.teacher(mathTeacher)
-					.group(group1)
-					.build());
-
-			courseTeacherGroupDao.save(CourseTeacherGroup.builder()
 					.course(math)
 					.teacher(mathTeacher)
 					.group(group2)
@@ -196,7 +190,7 @@ public class ELearningSystem {
 			CourseTeacherGroup ctg = CourseTeacherGroup.builder()
 					.course(algebra)
 					.teacher(mathTeacher)
-					.group(group2)
+					.group(group1)
 					.build();
 
 			courseTeacherGroupDao.save(ctg);

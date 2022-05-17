@@ -22,17 +22,17 @@ import ru.skqwk.elearningsystem.model.dto.CourseTeacherGroup;
 public class AcademicPlanForm extends FormLayout {
     Binder<CourseTeacherGroup> binder = new BeanValidationBinder<>(CourseTeacherGroup.class);
 
-    TextField literal = new TextField("literal");
-    TextField number = new TextField("number");
+    TextField literal = new TextField("Литерал");
+    TextField number = new TextField("Номер");
     Grid<CourseTeacherGroup> courseTeacherGroupGrid = new Grid<>(CourseTeacherGroup.class, false);
 
     ComboBox<Teacher> teachers = new ComboBox<Teacher>();
     ComboBox<Course> courses = new ComboBox<Course>();
-    
-    Button save = new Button("Save");
-    Button delete = new Button("Delete");
-    Button cancel = new Button("Cancel");
-    Button add = new Button("Add");
+
+    Button save = new Button("Сохранить");
+    Button delete = new Button("Удалить");
+    Button cancel = new Button("Закрыть");
+    Button add = new Button("Добавить");
 
     private CourseTeacherGroup courseTeacherGroup;
 

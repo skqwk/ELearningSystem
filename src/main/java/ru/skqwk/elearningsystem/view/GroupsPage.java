@@ -20,7 +20,7 @@ import ru.skqwk.elearningsystem.view.components.GroupForm;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
-@PageTitle("Groups")
+@PageTitle("Классы")
 @Route(value="groups", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class GroupsPage extends VerticalLayout {
@@ -62,7 +62,7 @@ public class GroupsPage extends VerticalLayout {
         grid.setSizeFull();
 
         grid.addColumn(group -> String.
-                format("%s%s", group.getNumber(), group.getLiteral()))
+                format("%s %s", group.getNumber(), group.getLiteral()))
                 .setHeader("Название");
 
         grid.addColumn(group -> group.getStudents().size())
@@ -74,14 +74,10 @@ public class GroupsPage extends VerticalLayout {
     }
 
     private Component getToolbar() {
-        filterText.setPlaceholder("Filter by name");
-        filterText.setClearButtonVisible(true);
-        filterText.setValueChangeMode(ValueChangeMode.LAZY);
-        filterText.addValueChangeListener(e -> updateList());
 
-        Button addNewGroup = new Button("Add new group");
+        Button addNewGroup = new Button("Добавить класс");
         addNewGroup.addClickListener(e -> addGroup());
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addNewGroup);
+        HorizontalLayout toolbar = new HorizontalLayout(addNewGroup);
         toolbar.addClassName("toolbar");
 
         return toolbar;
@@ -123,7 +119,7 @@ public class GroupsPage extends VerticalLayout {
         listBox.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
         dialogLayout.add(listBox);
 
-        Button add = new Button("Add");
+        Button add = new Button("Добавить");
         add.addClickListener(e -> {
             Group group = event.getEntity();
             for (Student student : listBox.getSelectedItems()) {

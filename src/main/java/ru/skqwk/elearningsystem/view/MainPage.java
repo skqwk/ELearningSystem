@@ -7,7 +7,7 @@ import com.vaadin.flow.router.Route;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
-@PageTitle("Main Page")
+@PageTitle("Главная страница")
 @Route(value="/", layout = MainLayout.class)
 @PermitAll
 public class MainPage extends VerticalLayout {

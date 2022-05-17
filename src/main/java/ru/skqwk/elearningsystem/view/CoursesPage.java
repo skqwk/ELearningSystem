@@ -17,14 +17,14 @@ import ru.skqwk.elearningsystem.view.components.CourseForm;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 
-@PageTitle("Courses")
+@PageTitle("Дисциплины")
 @Route(value="courses", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class CoursesPage extends VerticalLayout {
 
     private final IELearningService service;
     private final TextField filterText = new TextField();
-    private final Grid<Course> grid = new Grid<>(Course.class);
+    private final Grid<Course> grid = new Grid<>(Course.class, false);
     Dialog addGroups = new Dialog();
 
     CourseForm courseForm;
@@ -89,14 +89,10 @@ public class CoursesPage extends VerticalLayout {
     }
 
     private Component getToolbar () {
-        filterText.setPlaceholder("Filter by name");
-        filterText.setClearButtonVisible(true);
-        filterText.setValueChangeMode(ValueChangeMode.LAZY);
-        filterText.addValueChangeListener(e -> updateList());
 
-        Button addNewCourse = new Button("Add new course");
+        Button addNewCourse = new Button("Добавить дисциплину");
         addNewCourse.addClickListener(e -> addCourse());
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addNewCourse);
+        HorizontalLayout toolbar = new HorizontalLayout(addNewCourse);
         toolbar.addClassName("toolbar");
 
         return toolbar;
@@ -110,8 +106,7 @@ public class CoursesPage extends VerticalLayout {
     private void configureGrid () {
         grid.addClassName("course-grid");
         grid.setSizeFull();
-        grid.setColumns("name");
-
+        grid.addColumn(Course::getName).setHeader("Название дисциплины");
         grid.addColumn(course -> course.getDepartment().getName()).setHeader("Кафедра");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));

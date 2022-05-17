@@ -9,6 +9,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import ru.skqwk.elearningsystem.model.Student;
 import ru.skqwk.elearningsystem.model.Teacher;
 import ru.skqwk.elearningsystem.services.IELearningService;
 import ru.skqwk.elearningsystem.view.components.TeacherForm;
@@ -23,7 +24,7 @@ public class TeachersPage extends VerticalLayout {
 
     private final IELearningService service;
 
-    Grid<Teacher> grid = new Grid<>(Teacher.class);
+    Grid<Teacher> grid = new Grid<>(Teacher.class, false);
     TextField filterText = new TextField();
     TeacherForm teacherForm;
 
@@ -52,7 +53,12 @@ public class TeachersPage extends VerticalLayout {
     private void configureGrid() {
         grid.addClassName("teacher-grid");
         grid.setSizeFull();
-        grid.setColumns("name", "surname", "patronymic", "workExperience");
+
+        grid.addColumn(Teacher::getName).setHeader("Имя");
+        grid.addColumn(Teacher::getSurname).setHeader("Фамилия");
+        grid.addColumn(Teacher::getPatronymic).setHeader("Отчество");
+        grid.addColumn(Teacher::getWorkExperience).setHeader("Опыт работы");
+//        grid.setColumns("name", "surname", "patronymic", "workExperience");
 
         grid.addColumn(teacher -> teacher.getDepartment().getName()).setHeader("Кафедра");
 
@@ -62,12 +68,12 @@ public class TeachersPage extends VerticalLayout {
     }
 
     private Component getToolbar() {
-        filterText.setPlaceholder("Filter by name");
+        filterText.setPlaceholder("Найти по имени");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addNewTeacher = new Button("Add new teacher");
+        Button addNewTeacher = new Button("Добавить учителя");
         addNewTeacher.addClickListener(e -> addTeacher());
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addNewTeacher);
         toolbar.addClassName("toolbar");

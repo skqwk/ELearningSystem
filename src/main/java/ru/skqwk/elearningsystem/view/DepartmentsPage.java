@@ -15,7 +15,7 @@ import ru.skqwk.elearningsystem.view.components.DepartmentForm;
 
 import javax.annotation.security.RolesAllowed;
 
-@PageTitle("Departments")
+@PageTitle("Кафедры")
 @Route(value="departments", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class DepartmentsPage extends VerticalLayout {
@@ -63,14 +63,10 @@ public class DepartmentsPage extends VerticalLayout {
     }
 
     private Component getToolbar() {
-        filterText.setPlaceholder("Filter by name");
-        filterText.setClearButtonVisible(true);
-        filterText.setValueChangeMode(ValueChangeMode.LAZY);
-        filterText.addValueChangeListener(e -> updateList());
 
-        Button addNewDepartment = new Button("Add new department");
+        Button addNewDepartment = new Button("Добавить кафедру");
         addNewDepartment.addClickListener(e -> addDepartment());
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addNewDepartment);
+        HorizontalLayout toolbar = new HorizontalLayout(addNewDepartment);
         toolbar.addClassName("toolbar");
 
         return toolbar;

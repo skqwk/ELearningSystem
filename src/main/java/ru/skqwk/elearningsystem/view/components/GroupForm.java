@@ -22,14 +22,14 @@ import ru.skqwk.elearningsystem.model.Student;
 public class GroupForm extends FormLayout {
     Binder<Group> binder = new BeanValidationBinder<>(Group.class);
 
-    TextField literal = new TextField("literal");
-    TextField number = new TextField("number");
+    TextField literal = new TextField("Литера");
+    TextField number = new TextField("Номер");
     Grid<Student> students = new Grid<>(Student.class, false);
 
-    Button save = new Button("Save");
-    Button delete = new Button("Delete");
-    Button cancel = new Button("Cancel");
-    Button add = new Button("Add");
+    Button save = new Button("Сохранить");
+    Button delete = new Button("Удалить");
+    Button cancel = new Button("Закрыть");
+    Button add = new Button("Добавить ученика");
 
     private Group group;
 

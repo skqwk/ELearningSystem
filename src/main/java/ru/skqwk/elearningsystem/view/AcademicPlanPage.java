@@ -23,7 +23,7 @@ import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
-@PageTitle("Academic Plan")
+@PageTitle("Учебный план")
 @Route(value="academic-plan", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
 public class AcademicPlanPage extends VerticalLayout {
@@ -71,7 +71,7 @@ public class AcademicPlanPage extends VerticalLayout {
         grid.setSizeFull();
 
         grid.addColumn(group -> String.
-                        format("%s%s", group.getNumber(), group.getLiteral()))
+                        format("%s %s", group.getNumber(), group.getLiteral()))
                 .setHeader("Название");
 
         grid.addColumn(group -> group.getStudents().size())
@@ -133,7 +133,7 @@ public class AcademicPlanPage extends VerticalLayout {
                 academicPlanList.add(academicPlanRow);
             }
             editAcademicPlanForm.add(academicPlanList);
-            Button add = new Button("Add");
+            Button add = new Button("Добавить дисциплину");
             add.addClickListener(e -> addAcademicPlanRow(academicPlanList, group));
             editAcademicPlanForm.add(add);
             editAcademicPlanForm.addDialogCloseActionListener(e -> {
@@ -185,7 +185,7 @@ public class AcademicPlanPage extends VerticalLayout {
             String fieldName = teacher.getSurname() +  " " + teacher.getName() + " " + teacher.getPatronymic();
             teacherField.setValue(fieldName);
             teacherField.setReadOnly(true);
-            Button deleteCourseTeacherGroup = new Button("Delete");
+            Button deleteCourseTeacherGroup = new Button("Удалить");
             deleteCourseTeacherGroup.addThemeVariants(ButtonVariant.LUMO_ERROR);
             deleteCourseTeacherGroup.addClickListener(deleteEvent -> {
                 System.out.println(courseTeacherGroup.getId());

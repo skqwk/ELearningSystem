@@ -13,8 +13,10 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.shared.Registration;
 import ru.skqwk.elearningsystem.model.Department;
+import ru.skqwk.elearningsystem.model.Group;
 import ru.skqwk.elearningsystem.model.Teacher;
 
 import java.util.List;
@@ -22,20 +24,24 @@ import java.util.List;
 public class TeacherForm extends FormLayout {
     Binder<Teacher> binder = new BeanValidationBinder<>(Teacher.class);
 
-    TextField name = new TextField("name");
-    TextField surname = new TextField("surname");
-    TextField patronymic = new TextField("patronymic");
-    ComboBox<Department> department = new ComboBox<>("department");
+    TextField name = new TextField("Имя");
+    TextField surname = new TextField("Фамилия");
+    TextField patronymic = new TextField("Отчество");
+    TextField workExperience = new TextField("Опыт работы");
+    ComboBox<Department> department = new ComboBox<>("Кафедра");
 
-    Button save = new Button("Save");
-    Button delete = new Button("Delete");
-    Button cancel = new Button("Cancel");
+    Button save = new Button("Сохранить");
+    Button delete = new Button("Удалить");
+    Button cancel = new Button("Закрыть");
 
     private Teacher teacher;
 
     public TeacherForm(List<Department> departments, Teacher teacher) {
         this.teacher =  teacher;
         addClassName("teacher-form");
+        binder.forField(workExperience)
+                .withConverter(new StringToIntegerConverter(""))
+                .bind(Teacher::getWorkExperience, Teacher::setWorkExperience);
         binder.bindInstanceFields(this);
         department.setItems(departments);
         department.setItemLabelGenerator(Department::getName);
@@ -44,6 +50,7 @@ public class TeacherForm extends FormLayout {
                 name,
                 surname,
                 patronymic,
+                workExperience,
                 department,
                 createButtonsLayout()
         );

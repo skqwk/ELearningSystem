@@ -22,14 +22,14 @@ import java.util.List;
 public class StudentForm extends FormLayout {
     Binder<Student> binder = new BeanValidationBinder<>(Student.class);
 
-    TextField name = new TextField("name");
-    TextField surname = new TextField("surname");
-    TextField patronymic = new TextField("patronymic");
-    ComboBox<Group> group = new ComboBox<>("group");
+    TextField name = new TextField("Имя");
+    TextField surname = new TextField("Фамилия");
+    TextField patronymic = new TextField("Отчество");
+    ComboBox<Group> group = new ComboBox<>("Класс");
 
-    Button save = new Button("Save");
-    Button delete = new Button("Delete");
-    Button cancel = new Button("Cancel");
+    Button save = new Button("Сохранить");
+    Button delete = new Button("Удалить");
+    Button cancel = new Button("Закрыть");
 
     private Student student;
 

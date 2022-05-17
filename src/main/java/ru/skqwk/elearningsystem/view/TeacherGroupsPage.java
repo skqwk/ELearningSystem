@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 
 import static ru.skqwk.elearningsystem.model.enumeration.Status.*;
 
-@PageTitle("Teacher Groups")
+@PageTitle("Программа занятий")
 @Route(value="my-groups", layout = MainLayout.class)
 @RolesAllowed("TEACHER")
 @Slf4j
@@ -75,6 +75,7 @@ public class TeacherGroupsPage extends VerticalLayout {
     }
 
     private void configureTableForm() {
+        close.addThemeVariants(ButtonVariant.LUMO_ERROR);
         close.addClickListener(e -> {closeTableForm();});
 
         addLesson.addClickListener(e -> {
