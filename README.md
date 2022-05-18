@@ -77,6 +77,13 @@
 
 ![image](https://user-images.githubusercontent.com/71013663/168916030-9ffaa3fe-0943-4197-a166-6f367331c6b2.png)
 
+
+## Демонстрация работы приложения 
+
+
+https://user-images.githubusercontent.com/71013663/169062972-a581e3e4-7a4e-41dc-86cd-71c5adcbdb80.mp4
+
+
 ## <a name="task2"></a> 3. Требования к системе
 
 Для сборки и запуска проекта должны выполняться следующие системные требования:
