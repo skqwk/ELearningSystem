@@ -91,7 +91,11 @@ https://user-images.githubusercontent.com/71013663/169062972-a581e3e4-7a4e-41dc-
 -	Установленная JRE (Java Runtime Environment)
 -	Версия Java начиная с 11
 -	СУБД PostgreSQL
--	Созданная база данных для подключения приложения
+-	Созданная база данных для подключения приложения. Конфигурация БД
+  - url: `jdbc:postgresql://localhost:5432/crowd`
+  - password: `11`
+  - username: `root`
+  - все таблицы создаются автоматически
 
 
 ## <a name="task3"></a> 4. Установка и настройка
